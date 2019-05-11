@@ -5,13 +5,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet"
+          href="tachyons.min.css">
+    <link rel="stylesheet"
+          href="App.css">
     <title>fluxion-client-server</title>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      @keyframes left {
+        0% {
+          offset-distance: 100%;
+        }
+        100% {
+          offset-distance: 0%;
+        }
+      }
+
+      @keyframes right {
+        0% {
+          offset-distance: 0%;
+        }
+        100% {
+          offset-distance: 100%;
+        }
+      }
+
+      input {
+        font-family: "Inter UI";
+        background-color: #201e20;
+        color: #555755;
+      }
+
+    </style>
+
+    <script src="mousetrap.min.js"></script>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but fluxion-client-server doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="root">
+      <div id="app"></div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>
