@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 sans-serif bg-black-passive">
+  <div id="root" class="h-100 sans-serif bg-black-passive">
     <Welcome v-if="!network.length"></Welcome>
     <Layout v-else></Layout>
   </div>
