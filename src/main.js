@@ -69,7 +69,6 @@ function handleScale(event) {
   if (!ctrlKey) {
     return false;
   }
-  event.preventDefault();
   if (scaleCache === deltaY) {
     return false;
   }
