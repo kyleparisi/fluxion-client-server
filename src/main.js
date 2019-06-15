@@ -63,6 +63,31 @@ function removeLink() {
     Vue.delete(window.data.network[window.data.currentLayer].selectedLinks, link.id);
   });
 }
+let scaleCache = 1;
+function handleScale(event) {
+  const { deltaY, ctrlKey } = event;
+  if (!ctrlKey) {
+    return false;
+  }
+  event.preventDefault();
+  if (scaleCache === deltaY) {
+    return false;
+  }
+  const scale = window.data.network[data.currentLayer].scale;
+  if ((scale === 0.1 && deltaY <= 0) || (scale === 2 && deltaY >= 0)) {
+    return false;
+  }
+  scaleCache = deltaY;
+
+  const dScale = Math.floor(deltaY / 10) / 100;
+  const rangeScale = Math.min(2, Math.max(0.1, scale + dScale));
+  const scaleAsFloat = parseFloat(rangeScale.toFixed(2));
+  Vue.set(data.network[data.currentLayer], "scale", scaleAsFloat);
+  return false;
+}
+function resetScale() {
+  Vue.set(data.network[data.currentLayer], "scale", 1);
+}
 window.removeLink = removeLink;
 function handleEsc() {
   Vue.set(data.network[data.currentLayer], "selectedLinks", {});
@@ -77,12 +102,14 @@ new Vue({
 Mousetrap.bind(["ctrl+n", "command+n"], () => window.data.search.show = !window.data.search.show);
 Mousetrap.bind(["backspace"], removeLink);
 Mousetrap.bind(["esc"], handleEsc);
+Mousetrap.bind(["command+0"], resetScale);
 
 document.addEventListener('mousemove', function (event) {
   const pan = _.get(data, ["network", data.currentLayer, "pan"], {x: 0, y: 0});
   data.mouse.x = event.clientX - pan.x;
   data.mouse.y = event.clientY - pan.y;
 });
+window.addEventListener("wheel", handleScale);
 
 var socket = io('http://localhost:3000');
 socket.on("network", network => {
