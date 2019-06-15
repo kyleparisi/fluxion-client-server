@@ -105,80 +105,13 @@
       }
     },
     mounted() {
-      const input = new Channel();
-      const output = new Channel();
-      const { source, target, direction = "->" } = this.link;
-
-      // animation of packet, one direction
-      if (direction === "->") {
-        async function leftToRightmiddleware() {
-          let outputData = await output.take();
-
-          this.$set(this.packets, this.link.id, {
-            direction: "right",
-            link_id: this.link.id,
-            d: this.d
-          });
-          // await Sleep(1000);
-
-          if (this.link.logging) {
-            console.log(outputData);
-          }
-          input.put(outputData);
-
-          leftToRightmiddleware.call(this).catch(() => {});
-        }
-
-        leftToRightmiddleware.call(this).catch(console.log);
-      }
-
-      // output side of link
-      if (typeof engine.outputs[source.node] !== "undefined" &&
-          typeof engine.outputs[source.node][source.port] !== "undefined"
-      ) {
-        // fork channel
-        const pipe = new Channel();
-        const originalChan = engine.outputs[source.node][source.port];
-        (async () => {
-          while (pipe) {
-            const data = await pipe.take();
-            originalChan.put(data);
-            output.put(data);
-          }
-        })();
-        engine.outputs[source.node][source.port] = pipe;
-      } else {
-        // new channel
-        engine.outputs[source.node] = engine.outputs[source.node] || {};
-        engine.outputs[source.node][source.port] = output;
-      }
-
-      // input side of link
-      if (typeof engine.inputs[target.node] !== "undefined" &&
-          typeof engine.inputs[target.node][target.port] !== "undefined"
-      ) {
-        const newChannel = new Channel();
-        const originalChannel = engine.inputs[target.node][target.port];
-        engine.inputs[target.node][target.port] = newChannel;
-
-        (async () => {
-          const data = await originalChannel.take();
-          engine.inputs[target.node][target.port].put(data);
-        })();
-        (async () => {
-          const data = await input.take();
-          engine.inputs[target.node][target.port].put(data);
-        })();
-      } else {
-        // new channel
-        engine.inputs[target.node] = engine.inputs[target.node] || {};
-        engine.inputs[target.node][target.port] = input;
-      }
-    },
-    destroyed() {
-      const { source, target } = this.link;
-      delete engine.inputs[target.node];
-      delete engine.outputs[source.node];
+      socket.on("packet:" + this.link.id, data => {
+        this.$set(this.packets, this.link.id, {
+          direction: "right",
+          link_id: this.link.id,
+          d: this.d
+        });
+      });
     }
   }
 </script>

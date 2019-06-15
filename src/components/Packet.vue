@@ -8,7 +8,7 @@
   export default {
     name: "Packet",
     data() {
-      return window.data[0];
+      return window.data.network[window.data.currentLayer];
     },
     props: {
       link: Object
@@ -16,7 +16,7 @@
     mounted() {
       const removePacket = () => {
         this.$refs.packet.removeEventListener("webkitAnimationEnd", removePacket);
-        Vue.delete(this.packets, this.link.id)
+        this.$delete(this.packets, this.link.id)
       };
       this.$refs.packet.addEventListener("webkitAnimationEnd", removePacket);
     },

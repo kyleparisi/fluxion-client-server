@@ -83,3 +83,10 @@ document.addEventListener('mousemove', function (event) {
   data.mouse.x = event.clientX - pan.x;
   data.mouse.y = event.clientY - pan.y;
 });
+
+var socket = io('http://localhost:3000');
+socket.on("network", network => {
+  network = JSON.parse(network);
+  data.network = network;
+});
+window.socket = socket;
