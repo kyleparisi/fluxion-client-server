@@ -106,6 +106,9 @@
     },
     mounted() {
       socket.on("packet:" + this.link.id, data => {
+        if (this.link.logging) {
+          console.log(data);
+        }
         this.$set(this.packets, this.link.id, {
           direction: "right",
           link_id: this.link.id,
