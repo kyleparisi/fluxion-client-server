@@ -110,7 +110,7 @@ document.addEventListener('mousemove', function (event) {
 });
 window.addEventListener("wheel", handleScale);
 
-var socket = io('http://localhost:3000');
+const socket = io();
 socket.on("network", network => {
   network = JSON.parse(network);
   data.network = network;
