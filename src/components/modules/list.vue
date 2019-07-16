@@ -11,6 +11,7 @@
 <script>
   import Chartjs from "./chartjs";
   export default {
+    name: "list",
     components: { Chartjs },
     data() {
       return {
@@ -44,9 +45,8 @@
       }
     },
     mounted () {
-      if (!engine.inputs[this.node.id]) return false;
-      engine.inputs[this.node.id].data.take().then(closings => {
-        this.list = closings;
+      socket.on("packet:20", data => {
+        this.list = data;
       });
     }
   }
