@@ -110,7 +110,7 @@ document.addEventListener('mousemove', function (event) {
 });
 window.addEventListener("wheel", handleScale);
 
-const socket = io();
+const socket = io("https://alpaca-sp500.fluxion.app/");
 socket.on("network", network => {
   network = JSON.parse(network);
   data.network = network;
