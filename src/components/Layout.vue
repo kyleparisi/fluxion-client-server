@@ -55,7 +55,7 @@
         v-if="Object.keys(selectedLinks).length"
       >
         <div class="flex items-center">
-          <div class="pointer orange" @click="addLoggingToLinks">
+          <div class="pointer orange" @click="addLoggingToLinks(true)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -76,7 +76,7 @@
               <line x1="8" y1="23" x2="16" y2="23"></line>
             </svg>
           </div>
-          <div class="pointer" @click="addLoggingToLinks">
+          <div class="pointer" @click="addLoggingToLinks(false)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -145,9 +145,9 @@ export default {
     });
   },
   methods: {
-    addLoggingToLinks() {
+    addLoggingToLinks(status) {
       Object.keys(this.selectedLinks).map(key => {
-        this.links[key].logging = !this.links[key].logging;
+        this.links[key].logging = status;
       });
       this.selectedLinks = {};
     }
