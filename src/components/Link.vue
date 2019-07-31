@@ -58,7 +58,7 @@
       },
       selectLink() {
         if (this.selectedLinks[this.link.id]) {
-          Vue.delete(this.selectedLinks, this.link.id);
+          this.$delete(this.selectedLinks, this.link.id);
           return false;
         }
         this.$set(this.selectedLinks, this.link.id, this.link)
